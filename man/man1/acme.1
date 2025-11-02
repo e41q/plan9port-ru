@@ -1,7 +1,7 @@
 .TH ACME 1
-.SH NAME
-acme, win, awd \- interactive text windows
-.SH SYNOPSIS
+.SH ИМЯ
+acme, win, awd \- интерактивные текстовые окна
+.SH СИНТАКСИС
 .B acme
 [
 .B -abr
@@ -24,9 +24,9 @@ acme, win, awd \- interactive text windows
 ]
 [
 .B -l
-.I file
+.I файл
 |
-.I file
+.I файл(файлы)
 \&... ]
 .LP
 .B win
@@ -38,130 +38,126 @@ acme, win, awd \- interactive text windows
 [
 .I label
 ]
-.SH DESCRIPTION
+.SH ОПИСАНИЕ
 .I Acme
-manages windows of text that may be edited interactively or by external programs.
-The interactive interface uses the keyboard and mouse; external programs
-use a set of files served by
+управляет окнами текста, которые могут быть отредактированы интерактивно или внешними программами.
+Интерактивный интерфейс использует клавиатуру и мышь; внешние программы
+используют набор файлов, предоставляемых
 .IR acme ;
-these are discussed in
+подробнее в
 .MR acme 4 .
 .PP
-Any named
-.I files
-are read into
+Указанные
+.I файлы
+загружаются в окна
 .I acme
-windows before
+перед тем как
 .I acme
-accepts input.
-With the
+начнёт принимать ввод.
+С аргументом
 .B -l
-option, the state of the entire system is loaded
-from
-.IR file ,
-which should have been created by a
+состояние всей программы загружается
+из
+.IR файлa,
+который создаётся при помощи команды
 .B Dump
-command (q.v.),
-and subsequent
-.I file
-names are ignored.
-Plain files display as text; directories display as columnated lists of the
-names of their components, as in
+(рассматривается ниже).
+Все последующие имена
+.I файлов
+будут проигнорированы.
+Обычные текстовые файлы отображаются как текст; каталоги отображаются табличным списком
+их содержимого, как вывод команды
 .B "ls -p directory|mc
-except that the names of subdirectories have a slash appended.
+, только к названиям подкаталогов добавится косая черта в конце.
 .PP
-The
+Аргумент
 .B -f
 .RB ( -F )
-option sets the main font, usually variable-pitch (alternate, usually fixed-pitch);
-the default is
+устанавливает основной шрифт, обычно — пропорциональный (альтернативно — моноширинный);
+Значение по-умолчанию —
 .B \*9/font/lucsans/euro.8.font
 .RB ( \&.../lucm/unicode.9.font ).
-Tab intervals are set to the width of 4 (or the value of
-.BR $tabstop )
-numeral zeros in the appropriate font.
+Интервалы табуляции устанавливаются равными ширине 4 нулевых символов соответствующего шрифта. (или значению переменной окружения
+.BR $tabstop
+)
 .PP
-The
+Аргумент
 .B -m
-option instructs
+предписывает
 .I acme
-to use FUSE (see
+использовать FUSE (см.
 .MR 9pfuse 4 )
-to mount itself at
+чтобы смонтировать себя в
 .IR mtpt .
-(Experimental.)
+(Экспериментально.)
 .PP
-.SS Windows
+.SS Окна
 .I Acme
-windows are in two parts: a one-line
-.I tag
-above a multi-line
-.IR body .
-The body typically contains an image of a file, as in
+окна состоят из двух частей: однострочный
+.I заголовок (tag)
+, под ним - многострочное
+.IR тело .
+Тело, содержит представление файла, как в программе
 .MR sam 1 ,
-or the output of a
-program, as in an
-.MR rio 1
-window.
-The tag contains a number of
-blank-separated words, followed by a vertical bar character, followed by anything.
-The first word is the name of the window, typically the name of the associated
-file or directory, and the other words are commands available in that window.
-Any text may be added after the bar; examples are strings to search for or
+или вывод
+программы, как в окне
+.MR rio 1 .
+Заголовок состоит из ряда
+разделённых пробелами слов, после которых идёт вертикальная черта, а далее произвольный текст.
+Первое слово — имя окна, обычно соответствующее имени ассоциированного
+файла или каталога, остальные слова — команды доступные в данном окне.
+После черты можно добавить любой текст; Например, строки для поиска или
 commands to execute in that window.
-Changes to the text left of the bar will be ignored,
-unless the result is to change the name of the
-window.
+команды для выполнения в этом окне.
+Изменения текста слева от черты будут проигнорированы,
+кроме случая изменения имени
+окна.
 .PP
-If a window holds a directory, the name (first word of the tag) will end with
-a slash.
-.SS Scrolling
-Each window has a scroll bar to the left of the body.
-The scroll bar behaves much as in
+Если окно содержит каталог, имя (первое слово заголовка) будет оканчиваться
+косой чертой.
+.SS Скроллинг
+Каждое окно имеет полосу прокрутки слева от тела окна.
+Полоса прокрутки ведёт себя почти также как в
 .MR sam 1
-or
+или
 .MR rio 1
-except that scrolling occurs when the button is pressed, rather than released,
-and continues
-as long as the mouse button is held down in the scroll bar.
-For example, to scroll slowly through a file,
-hold button 3 down near the top of the scroll bar.  Moving the mouse
-down the scroll bar speeds up the rate of scrolling.
-(The experimental option
-.B -r
-reverses the scrolling behavior of buttons 1 and 3, to behave
-more like
+за исключением того, что прокрутка происходит когда кнопка нажата, нежели отпущена
+и продолжается до тех пор,
+пока кнопка мыши удерживается нажатой внутри полосы прокрутки.
+Например, чтобы медленно пролистывать файл,
+нажмите и удерживайте кнопку 3 возле верхней части полосы прокрутки. Перемещение указателя
+мыши ниже по полосе увеличивает скорость прокрутки.
+(Экспериментальная опция
+.B -
+меняет поведение кнопок 1 и 3 на противоположное, делая их работу
+похожей на программу
 .MR xterm 1 .)
-.SS Layout
+.SS Компоновка
+Окна в
 .I Acme
-windows are arranged in columns.  By default, it creates two columns when starting;
-this can be overridden with the
-.B -c
-option.
-Placement is automatic but may be adjusted
-using the
-.I layout box
-in the upper left corner of each window and column.
-Pressing and holding any mouse button in the box drags
-the associated window or column.
-For windows, just
-clicking in the layout box grows the window in place: button 1
-grows it a little, button 2 grows it as much as it can, still leaving all other
-tags in that column visible, and button 3 takes over the column completely,
-temporarily hiding other windows in the column.
-(They will return
-.I en masse
-if any of them needs attention.)
-The layout box in a window is normally white; when it is black in the center,
-it records that the file is `dirty':
+располагаются столбцами. По умолчанию при запуске создается два столбца;
+это поведение можно переопределить аргументом
+.B -c .
+Расположение окон автоматическое, но может быть изменено
+при помощи
+.I маркера расположения (layout box)
+в верхнем левом углу каждого окна и столбца.
+Нажатие и удержание любой кнопки мыши в области маркера
+позволяет перемещать соответствующее окно или столбец.
+В окне щелчок по маркеру расположения увеличивает размер окна не перемещая его: кнопка 1
+немного расширяет окно, кнопка 2 растягивает его насколько возможно, оставляя  от других окон в столбце лишь заголовки,
+а клик кнопкой 3 полностью заполняет весь столбец,
+временно скрывая другие окна в нём.
+(Они вернутся вновь все вместе, когда хотя бы одному из них потребуется внимание).
+Маркер расположения в обычном состоянии "белый"; Если он становится "тёмным" по-центру,
+это показывает что файл 'измененён':
 .I acme
-believes it is modified from its original
-contents.
+полагает, что он был изменён относительно своего исходного содержимого.
 .PP
-Tags exist at the top of each column and across the whole display.
+Заголовки находятся вверху каждого столбца и вдоль всего окна приложения.
 .I Acme
-pre-loads them with useful commands.
-Also, the tag across the top maintains a list of executing long-running commands.
+предзаполняет их полезными командами.
+Кроме того, самый верхний заголовок отображает список длительно выполняемых команд.
 .SS Typing
 The behavior of typed text is similar to that in
 .MR rio 1
