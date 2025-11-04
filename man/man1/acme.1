@@ -243,68 +243,69 @@ where
 .I directory
 is identified by the context of the command.
 These error windows are created when needed.
-.SS "Mouse button 1
-Mouse button 1 selects text just as in
+.SS "Кнопка мыши 1
+Кнопка мыши 1 выделяет текст точно так же, как в
 .MR sam 1
-or
+или
 .IR rio (1) ,
-including the usual double-clicking conventions.
+включая обычные соглашения о двойном щелчке.
 .SS "Mouse button 2
-By an
-action similar to selecting text with button 1,
-button 2 indicates text to execute as a command.
-If the indicated text has multiple white-space-separated words,
-the first is the command name and the second and subsequent
-are its arguments.
-If button 2 is `clicked'\(emindicates a null string\(em\c
+Подобно выделению текста с помощью кнопки 1,
+кнопка 2 указывает текст, который следует выполнить как команду.
+Если выделенный текст содержит несколько слов разделенных пробелами,
+первое слово является именем команды, а остальные - ее аргументами.
+Если кнопка 2 нажата и отпущена без выделения текста, то
 .I acme
-.I expands
 the indicated text to find a command to run:
+начинает искать, какую команду он должен выполнить:
 if the click is within button-1-selected text,
+если клик был по выделенному кнопкой мыши 1 тексту,
 .I acme
-takes that selection as the command;
-otherwise it takes the largest string of valid file name characters containing the click.
-Valid file name characters are alphanumerics and
+использует это выделение в качестве команды;
+иначе,
+.I acme
+берёт самую большую строку допустимых символов имени файла на которую пришелся клик.
+Допустимые символы имени файла - это алфавитно-цифровые символы и
 .B _
 .B .
 .B -
 .B +
 .BR / .
-This behavior is similar to double-clicking with button 1 but,
-because a null command is meaningless, only a single click is required.
+Это поведение похоже на двойной клик с кнопкой 1 но,
+поскольку пустая команда не имела бы смысла, требуется только один клик.
 .PP
-Some commands, all by convention starting with a capital letter, are
-.I built-ins
-that are executed directly by
+Некоторые команды, по-соглашению начинающиеся с заглавной буквы, являются
+.I встроенными (built-ins)
+и исполняются непосредственно
 .IR acme :
 .TP
 .B Cut
-Delete most recently selected text and place in snarf buffer.
+Delete Удаляет последний выделенный фрагмент текста и помещает его в буфер обмена.
 .TP
 .B Del
-Delete window.  If window is dirty, instead print a warning; a second
+Закрывает окно. Если содержимое окна было изменено, выводит предупреждение; повторное нажатие
 .B Del
-will succeed.
+закроет окно.
 .TP
 .B Delcol
-Delete column and all its windows, after checking that windows are not dirty.
+Удаляет столбец вместе со всеми его окнами после проверки отсутствия несохранённых изменений в окнах.
 .TP
 .B Delete
-Delete window without checking for dirtiness.
+Удалить окно без проверки на наличие изменений.
 .TP
 .B Dump
-Write the state of
+Записать состояние
 .I acme
-to the file name, if specified, or
+в указанный файл, либо, если имя файла не указано, в
 .B $HOME/acme.dump
-by default.
+по-умолчанию.
 .TP
 .B Edit
-Treat the argument as a text editing command in the style of
+Рассматривайте аргумент как команду редактирования текста в стиле
 .MR sam 1 .
-The full
+Язык
 .B Sam
-language is implemented except for the commands
+поддерживается полностью, кроме команд
 .BR k ,
 .BR n ,
 .BR q ,
@@ -326,31 +327,33 @@ scratch window and executed, with
 itself in the current window, using the 2-1 chord described below.
 .TP
 .B Exit
-Exit
+Выйти из
 .I acme
-after checking that windows are not dirty.
+после проверки окон на несохраненные изменения.
 .TP
 .B Font
-With no arguments, change the font of the associated window from fixed-spaced to
-proportional-spaced or
-.I vice
-.IR versa .
+Без аргументов, меняет шрифт c моноширинного на пропорциональный и
+.I наоборот .
 Given a file name argument, change the font of the window to that stored in the named file.
+Если указан аргумент имени файла, меняется шрифт окна на тот, который хранится в данном файле.
 If the file name argument is prefixed by
+Если имя файла начинается с префикса
 .B var
 .RB ( fix ),
-also set the default proportional-spaced (fixed-spaced) font for future use to that font.
-Other existing windows are unaffected.
+также задаётся используемый по умолчанию пропорциональный (моноширинный) шрифт для
+последующего применения именно к этому шрифту.
+Другие окна не будут затронуты.
 .TP
 .B Get
-Load file into window, replacing previous contents (after checking for dirtiness as in
+Загрузить файл в окно, заменив предыдущее содержимое
+(после проверки на наличие изменений, аналогично
 .BR Del ).
-With no argument, use the existing file name of the window.
-Given an argument, use that file but do not change the window's file name.
+При клике без аргумента используется существующее имя файла окна.
+Если указан аргумент, загружается указанный файл, но имя файла окна не изменяется.
 .TP
 .B ID
-Print window ID number
-.RI ( q.v. ).
+Вывести ID номер окна
+.RI ( см, далее ).
 .TP
 .B Incl
 When opening `include' files
@@ -378,31 +381,30 @@ This command is largely superseded by plumbing
 .MR plumb 7 ).
 .TP
 .B Indent
-Set the autoindent mode according to the argument:
+Устанавливает режим автоматического отступа согласно аргументу:
 .B on
-and
+и
 .B off
-set the mode for the current window;
+для текущего окна;
 .B ON
-and
+и
 .B OFF
-set the mode for all existing and future windows.
+для существующих и будущих окон.
 .TP
 .B Kill
-Send a
+Посылает сигнал
 .B kill
-note to
-.IR acme -initiated
-commands named as arguments.
+командам, инициированным
+.IR acme ,
+имена которых указаны в качестве аргументов.
 .TP
 .B Load
-Restore the state of
+Восстановить состояние
 .I acme
-from a file (default
+из файла (по-умолчанию,
 .BR $HOME/acme.dump )
-created by the
-.B Dump
-command.
+созданного командой
+.B Dump .
 .TP
 .B Local
 In the Plan 9
@@ -431,117 +433,112 @@ is recognized as a prefix, but has no effect on the command being executed.
 .\" .BR $objtype .
 .TP
 .B Look
-Search in body for occurrence of literal text indicated by the argument or,
-if none is given, by the selected text in the body.
+Искать в теле окна вхождения текста. Переданного в аргументе или,
+если он не указан, выделенный текст в теле окна.
 .TP
 .B New
-Make new window.  With arguments, load the named files into windows.
+Создать новое окно. При наличии аргументов, загрузить указанные файлы в новые окна.
 .TP
 .B Newcol
-Make new column.
+Создать новый столбец.
 .TP
 .B Paste
-Replace most recently selected text with contents of snarf buffer.
+Заменить последний выделенный текст содержимым буфера обмена (
+.I snarf
+буфера).
 .TP
 .B Put
-Write window to the named file.
-With no argument, write to the file named in the tag of the window.
+Записать содержимое окна в указанный файл.
+Без аргументов, записать в файл, имя которого указано в заголовке окна.
 .TP
 .B Putall
-Write all dirty windows whose names indicate existing regular files.
+Записать все измененные окна, имена которых указывают на существующие обычные файлы.
 .TP
 .B Redo
-Complement of
+Обратное действие от
 .BR Undo .
 .TP
 .B Send
-Append selected text or snarf buffer to end of body; used mainly with
+Добавить выделенный текст или содержимое буфера обмена в конец тела окна; используется в основном с
 .IR win .
 .TP
 .B Snarf
-Place selected text in snarf buffer.
+Поместить выделенный текст в буфер обмена (snarf буффер).
 .TP
 .B Sort
-Arrange the windows in the column from top to bottom in lexicographical
-order based on their names.
+Расположить окна в столбце сверху вниз в лексикографическом
+порядке на основе их имен.
 .TP
 .B Tab
-Set the width of tab stops for this window to the value of the argument, in units of widths of the zero
-character.
-With no arguments, it prints the current value.
+Установить ширину отступов табуляции для текущего окна в соответствии со значением аргумента,
+в единицах ширины нулевого символа. Без аргументов, выводит текущее значение.
 .TP
 .B Undo
-Undo last textual change or set of changes.
+Отменить последнее текстовое изменение или группу изменений.
 .TP
 .B Zerox
-Create a copy of the window containing most recently selected text.
+Создать копию окна, содержащего последний выделенный текст.
 .TP
 .B <|>
-If a regular shell command is preceded by a
+Если обычной команде оболочки предшествуют символы
 .BR < ,
 .BR | ,
-or
+или
 .B >
-character, the selected text in the body of the window is affected by the
-I/O from the command.
-The
+то выделенный текст в теле окна подвергается воздействию ввода-вывода команды.
+Символ
 .B <
-character causes the selection to be replaced by the standard output
-of the command;
+заменяет выделение стандартным выводом команды; символ
 .B >
-causes the selection to be sent as standard input to the command; and
+отправляет выделение в качестве стандартного ввода команды; и символ |
 .B |
-does both at once, `piping' the selection through the command and
-replacing it with the output.
+выполняет оба действия одновременно, 'передавая' выделение через команду и заменяя его выводом.
 .PP
-A common place to store text for commands is in the tag; in fact
+Устоявшееся место для расположения исполняемых команд - в заголовке окна; Более того,
 .I acme
-maintains a set of commands appropriate to the state of the window
-to the left of the bar in the tag.
+поддерживает набор команд в заголовке окна слева, в зависимости от состоянием окна.
 .PP
-If the text indicated with button 2 is not a recognized built-in, it is executed as
-a shell command.  For example, indicating
+Если текст, указанный кнопкой 2, не распознаётся как встроенная команда, он выполняется как
+команда оболочки. Например, указание на
 .B date
-with button 2 runs
+кнопкой мыши 2 выполнит
 .MR date 1 .
-The standard
-and error outputs of commands are sent to the error window associated with
-the directory from which the command was run, which will be created if
-necessary.
-For example, in a window
-.B /etc/passwd
-executing
+Стандартные потоки вывода и ошибок команды будут отправлены в окно ошибок
+ассоциированное с каталогом, где была запущена команда. Окно будет создано при необходимости.
+Например, исполнение
 .B pwd
-will produce the output
+в окне
+.B /etc/passwd
+выведет
 .B /etc
-in a (possibly newly-created) window labeled
+в (возможно, только что созданном) окне с меткой
 .BR /etc/+Errors ;
-in a window containing
+В окне, содержащем
 .B /home/rob/sam/sam.c
-executing
+выполнение
 .B mk
-will run
+запустит
 .MR mk 1
-in
+в
 .BR /home/rob/sam ,
-producing output in a window labeled
+производящего вывод в окно с меткой
 .BR /home/rob/sam/+Errors .
-The environment of such commands contains the variable
+Среда выполнения этих команд содержит переменную
 .B $%
-and
+и
 .B $samfile
-with value set to the filename of the window in which the command is run,
-and
+со значением, соответствующим имени файла в заголовке окна, в котором выполняется команда, и
 .B $winid
-set to the window's id number
-(see
+соответствующим индентификатору (id) окна.
+
+(смотри
 .MR acme 4 ).
 .PP
-The environment variable
+Переменная окружения
 .B $acmeshell
-determines which shell is used to execute such commands; the
+определяет, какая оболочка будет использоваться для запуска команд; Оболочка
 .MR rc 1
-shell is used by default.
+Используется по-умолчанию.
 .SS "Mouse button 3
 Pointing at text with button 3 instructs
 .I acme
