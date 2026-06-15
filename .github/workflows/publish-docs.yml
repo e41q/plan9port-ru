@@ -37,16 +37,15 @@ jobs:
           # prepare public directory for GitHub Pages
           mkdir -p public/man
 
-          # copy generated HTML and index files
+          # copy man section directories (man1/, man3/, etc.) preserving structure
           for d in man1 man3 man4 man7 man8 man9; do
             if [ -d "$PLAN9/man/$d" ]; then
-              cp "$PLAN9/man/$d/"*.html public/man/ 2>/dev/null || true
-              cp "$PLAN9/man/$d/INDEX" "public/man/$d-INDEX" 2>/dev/null || true
+              cp -r "$PLAN9/man/$d" public/man/ 2>/dev/null || true
             fi
           done
 
           # copy section index pages (manweb generates man1.html, man3.html, etc.)
-          cp "$PLAN9/man/"*.html public/ 2>/dev/null || true
+          cp "$PLAN9/man/"*.html public/man/ 2>/dev/null || true
 
           # add an index redirect
           cat > public/index.html <<'EOF'
