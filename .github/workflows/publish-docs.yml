@@ -47,6 +47,10 @@ jobs:
           # copy section index pages (manweb generates man1.html, man3.html, etc.)
           cp "$PLAN9/man/"*.html public/man/ 2>/dev/null || true
 
+          # copy glendacircle.png for the Space Glenda footer image
+          mkdir -p public/dist
+          cp "$PLAN9/dist/glendacircle.png" public/dist/ 2>/dev/null || true
+
           # add an index redirect
           cat > public/index.html <<'EOF'
           <!DOCTYPE html>
