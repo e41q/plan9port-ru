@@ -1,0 +1,79 @@
+name: Publish Documentation
+run-name: Publish man pages to GitHub Pages
+
+on:
+  push:
+    branches: ["man-ru"]
+  workflow_dispatch:  # allow manual trigger
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install build-essential xorg-dev
+
+      - name: Build plan9port
+        run: ./INSTALL
+
+      - name: Generate HTML documentation
+        run: |
+          PLAN9=`pwd`
+          export PLAN9
+          PATH="$PLAN9/bin:$PATH"
+          export PATH
+
+          # generate section indices and individual HTML pages
+          # (manweb outputs files to $PLAN9/man/man*/)
+          $PLAN9/dist/manweb
+
+          # prepare public directory for GitHub Pages
+          mkdir -p public/man
+
+          # copy generated HTML and index files
+          for d in man1 man3 man4 man7 man8 man9; do
+            if [ -d "$PLAN9/man/$d" ]; then
+              cp "$PLAN9/man/$d/"*.html public/man/ 2>/dev/null || true
+              cp "$PLAN9/man/$d/INDEX" "public/man/$d-INDEX" 2>/dev/null || true
+            fi
+          done
+
+          # copy section index pages (manweb generates man1.html, man3.html, etc.)
+          cp "$PLAN9/man/"*.html public/ 2>/dev/null || true
+
+          # add an index redirect
+          cat > public/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head><meta http-equiv="refresh" content="0; url=man/man1/intro.html"></head>
+          <body><p><a href="man/man1/intro.html">Plan 9 from User Space — документация (русский перевод)</a></p></body>
+          </html>
+          EOF
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/
+
+  deploy:
+    needs: build-docs
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
